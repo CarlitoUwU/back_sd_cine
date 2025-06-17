@@ -30,6 +30,7 @@ model seats {
   id          BigInt @id @default(autoincrement())
   room_id     BigInt
   seat_number Int
+  is_occupied Boolean @default(false)
   row         String @db.VarChar(10)
 
   room rooms @relation(fields: [room_id], references: [id])
