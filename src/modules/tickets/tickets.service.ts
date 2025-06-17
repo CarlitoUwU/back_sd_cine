@@ -8,20 +8,16 @@ export class TicketsService {
   constructor(private prisma: PrismaService) { }
 
   async createTicket(dto: CreateTicketDto): Promise<TicketBaseDto> {
-    // Ejecutar el procedimiento almacenado y capturar el mensaje de salida
-    const [result] = await this.prisma.$queryRawUnsafe<any[]>(`
-      CALL sp_ComprarTicket(${dto.user_id}, ${dto.showtime_id}, ${dto.seat_id}, @mensaje);
-      SELECT @mensaje AS mensaje;
-    `);
+    const result = await this.prisma.$queryRawUnsafe<{ mensaje: string }[]>(
+      `CALL sp_ComprarTicket(${dto.user_id}, ${dto.showtime_id}, ${dto.seat_id})`
+    );
 
-    const mensaje = result?.mensaje;
+    const mensaje = result[0]?.['f0'];
 
-    // Validar mensaje de éxito o error
-    if (!mensaje?.includes('éxito')) {
+    if (!mensaje || !mensaje.includes('éxito')) {
       throw new BadRequestException(mensaje);
     }
 
-    // Si fue exitoso, buscar el ticket recién creado
     const data = await this.prisma.tickets.findFirst({
       where: {
         user_id: dto.user_id,
@@ -31,7 +27,7 @@ export class TicketsService {
     });
 
     if (!data) {
-      throw new BadRequestException('Hubo un error');
+      throw new BadRequestException('Hubo un error al recuperar el ticket.');
     }
 
     const ticket: TicketBaseDto = {
@@ -44,6 +40,7 @@ export class TicketsService {
 
     return plainToInstance(TicketBaseDto, ticket);
   }
+
 
   async getAllTickets(): Promise<TicketBaseDto[]> {
     const data = await this.prisma.tickets.findMany();

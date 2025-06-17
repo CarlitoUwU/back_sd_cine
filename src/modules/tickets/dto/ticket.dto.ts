@@ -25,5 +25,5 @@ export class TicketDto {
   @IsNotEmpty()
   @IsDate()
   @ApiProperty({ example: new Date().toISOString() })
-  purchase_date: Date;
+  purchase_date?: Date;
 }

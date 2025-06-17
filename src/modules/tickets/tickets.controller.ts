@@ -7,7 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Tickets')
 @Controller('tickets')
 export class TicketsController {
-  constructor(private ticketsService: TicketsService) {}
+  constructor(private ticketsService: TicketsService) { }
 
   @Post()
   @ApiOperation({ summary: 'Buy a ticket' })
