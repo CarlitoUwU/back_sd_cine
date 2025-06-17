@@ -8,17 +8,22 @@ datasource db {
 }
 
 model movies {
-  id          BigInt  @id @default(autoincrement())
-  title       String  @db.VarChar(255)
+  id          BigInt     @id @default(autoincrement())
+  title       String     @db.VarChar(255)
   duration    Int
-  url         String? @db.VarChar(255)
-  description String? @db.Text
+  url         String?    @db.VarChar(255)
+  description String?    @db.Text
+
+  showtimes   showtimes[] // relación 1:N
 }
 
 model rooms {
-  id       BigInt @id @default(autoincrement())
-  name     String @db.VarChar(100)
+  id       BigInt     @id @default(autoincrement())
+  name     String     @db.VarChar(100)
   capacity Int
+
+  seats     seats[]
+  showtimes showtimes[] // relación 1:N
 }
 
 model seats {
@@ -27,7 +32,10 @@ model seats {
   seat_number Int
   row         String @db.VarChar(10)
 
+  room rooms @relation(fields: [room_id], references: [id])
+
   @@index([room_id], map: "idx_seats_room")
+  tickets tickets[]
 }
 
 model showtimes {
@@ -35,6 +43,10 @@ model showtimes {
   movie_id   BigInt
   room_id    BigInt
   start_time DateTime @db.Timestamp(0)
+
+  movie movies @relation(fields: [movie_id], references: [id])
+  room  rooms  @relation(fields: [room_id], references: [id])
+  tickets tickets[]
 
   @@index([movie_id], map: "idx_showtimes_movie")
   @@index([room_id], map: "room_id")
@@ -47,14 +59,20 @@ model tickets {
   seat_id       BigInt
   purchase_date DateTime @default(now()) @db.Timestamp(0)
 
+  user     users     @relation(fields: [user_id], references: [id])
+  showtime showtimes @relation(fields: [showtime_id], references: [id])
+  seat     seats     @relation(fields: [seat_id], references: [id])
+
   @@index([user_id], map: "idx_tickets_user")
   @@index([seat_id], map: "seat_id")
   @@index([showtime_id], map: "showtime_id")
 }
 
 model users {
-  id       BigInt @id @default(autoincrement())
-  name     String @db.VarChar(255)
-  email    String @unique(map: "email") @db.VarChar(255)
-  password String @db.VarChar(255)
+  id       BigInt   @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  email    String   @unique(map: "email") @db.VarChar(255)
+  password String   @db.VarChar(255)
+
+  tickets  tickets[]
 }
