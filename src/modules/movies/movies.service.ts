@@ -15,6 +15,7 @@ export class MoviesService {
         title: true,
         duration: true,
         description: true,
+        url: true,
       },
     });
 
@@ -23,6 +24,7 @@ export class MoviesService {
       title: movie.title,
       duration: movie.duration,
       description: movie.description ?? undefined,
+      url: movie.url ?? undefined,
     }));
 
     return movies.map(movie => plainToInstance(MovieBaseDto, movie))
@@ -36,6 +38,7 @@ export class MoviesService {
         title: true,
         duration: true,
         description: true,
+        url: true,
       }
     })
 
@@ -47,7 +50,8 @@ export class MoviesService {
       id: Number(data.id),
       title: data.title,
       duration: data.duration,
-      description: data.description || undefined
+      description: data.description || undefined,
+      url: data.url || undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie)
@@ -65,13 +69,15 @@ export class MoviesService {
         title: true,
         duration: true,
         description: true,
+        url: true,
       }
     })
 
     const movie: MovieBaseDto = {
       ...data,
       id: Number(data.id),
-      description: data.description || undefined
+      description: data.description || undefined,
+      url: data.url || undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie);
@@ -90,13 +96,15 @@ export class MoviesService {
         title: true,
         duration: true,
         description: true,
+        url: true,
       },
     });
 
     const movie: MovieBaseDto = {
       ...data,
       id: Number(data.id),
-      description: data.description || undefined
+      description: data.description || undefined,
+      url: data.url || undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie);
@@ -118,7 +126,8 @@ export class MoviesService {
     const deletedMovie: MovieBaseDto = {
       ...movie,
       id: Number(movie.id),
-      description: movie.description || undefined
+      description: movie.description || undefined,
+      url: movie.url || undefined,
     }
 
     return plainToInstance(MovieBaseDto, deletedMovie);

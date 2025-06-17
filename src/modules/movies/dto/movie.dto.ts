@@ -6,6 +6,7 @@ import {
   IsString,
   MinLength,
   Min,
+  IsUrl,
 } from 'class-validator';
 
 export class MovieDto {
@@ -25,6 +26,11 @@ export class MovieDto {
   @Min(1)
   @ApiProperty({ description: 'Duration of the movie in minutes', type: Number, example: 148 })
   duration!: number;
+
+  @IsOptional()
+  @IsUrl()
+  @ApiPropertyOptional({ description: 'URL of the movie poster or cover image', type: String, example: 'https://example.com/images/inception-poster.jpg' })
+  url?: string;
 
   @IsOptional()
   @IsString()

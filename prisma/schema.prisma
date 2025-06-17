@@ -11,6 +11,7 @@ model movies {
   id          BigInt  @id @default(autoincrement())
   title       String  @db.VarChar(255)
   duration    Int
+  url         String? @db.VarChar(255)
   description String? @db.Text
 }
 
