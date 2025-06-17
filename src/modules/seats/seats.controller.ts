@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
@@ -60,5 +61,23 @@ export class SeatsController {
   @ApiResponse({ status: 404, description: 'Seat not found' })
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.seatsService.deleteSeat(id);
+  }
+
+  @Patch('/:id/occupy')
+  @ApiOperation({ summary: 'Mark seat as occupied' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: 200, description: 'Seat marked as occupied', type: SeatBaseDto })
+  @ApiResponse({ status: 404, description: 'Seat not found' })
+  occupy(@Param('id', ParseIntPipe) id: number) {
+    return this.seatsService.occupySeat(id);
+  }
+
+  @Patch('/:id/free')
+  @ApiOperation({ summary: 'Mark seat as unoccupied' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: 200, description: 'Seat marked as free', type: SeatBaseDto })
+  @ApiResponse({ status: 404, description: 'Seat not found' })
+  free(@Param('id', ParseIntPipe) id: number) {
+    return this.seatsService.freeSeat(id);
   }
 }
