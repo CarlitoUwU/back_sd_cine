@@ -29,6 +29,7 @@ CREATE TABLE movies (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   duration INT NOT NULL,
+  url VARCHAR(255),
   description TEXT
 );
 
@@ -52,6 +53,7 @@ CREATE TABLE seats (
   room_id BIGINT NOT NULL,
   seat_number INT NOT NULL,
   `row` VARCHAR(10) NOT NULL,
+  is_occupied TINYINT(1) NOT NULL DEFAULT 0,
   FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
 
@@ -112,40 +114,48 @@ DELIMITER $$
 CREATE PROCEDURE sp_ComprarTicket (
   IN p_user_id BIGINT,
   IN p_showtime_id BIGINT,
-  IN p_seat_id BIGINT,
-  OUT p_mensaje VARCHAR(200)
+  IN p_seat_id BIGINT
 )
 BEGIN
+  DECLARE mensaje VARCHAR(200);
+
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
     ROLLBACK;
-    SET p_mensaje = 'Error: no se pudo completar la compra.';
+    SET mensaje = 'Error: no se pudo completar la compra.';
+    SELECT mensaje AS mensaje;
   END;
 
   START TRANSACTION;
 
   IF NOT EXISTS (SELECT 1 FROM users WHERE id = p_user_id) THEN
-    SET p_mensaje = 'Error: Usuario no válido.';
+    SET mensaje = 'Error: Usuario no válido.';
     ROLLBACK;
+    SELECT mensaje AS mensaje;
   ELSEIF NOT EXISTS (SELECT 1 FROM showtimes WHERE id = p_showtime_id) THEN
-    SET p_mensaje = 'Error: Función no válida.';
+    SET mensaje = 'Error: Función no válida.';
     ROLLBACK;
+    SELECT mensaje AS mensaje;
   ELSEIF NOT EXISTS (SELECT 1 FROM seats WHERE id = p_seat_id) THEN
-    SET p_mensaje = 'Error: Asiento no válido.';
+    SET mensaje = 'Error: Asiento no válido.';
     ROLLBACK;
+    SELECT mensaje AS mensaje;
   ELSEIF EXISTS (
     SELECT 1 FROM tickets
     WHERE showtime_id = p_showtime_id AND seat_id = p_seat_id
   ) THEN
-    SET p_mensaje = 'Error: Ese asiento ya está ocupado.';
+    SET mensaje = 'Error: Ese asiento ya está ocupado.';
     ROLLBACK;
+    SELECT mensaje AS mensaje;
   ELSE
     INSERT INTO tickets (user_id, showtime_id, seat_id)
     VALUES (p_user_id, p_showtime_id, p_seat_id);
     COMMIT;
-    SET p_mensaje = 'Compra realizada con éxito.';
+    SET mensaje = 'Compra realizada con éxito.';
+    SELECT mensaje AS mensaje;
   END IF;
 END$$
 
 DELIMITER ;
+
 
