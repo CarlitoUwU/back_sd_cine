@@ -9,20 +9,13 @@ export class ShowtimesService {
 
   async getShowtimes(): Promise<ShowtimeBaseDto[]> {
     const data = await this.prisma.showtimes.findMany({
-      select: {
-        id: true,
-        movie_id: true,
-        room_id: true,
-        start_time: true,
+      include: {
+        movie: true,
+        room: true,
       },
     });
 
-    const showTimes: ShowtimeBaseDto[] = data.map(showtime => ({
-      ...showtime,
-      id: Number(showtime.id),
-      movie_id: Number(showtime.movie_id),
-      room_id: Number(showtime.room_id),
-    }));
+    const showTimes: ShowtimeBaseDto[] = data.map(this.toShowtimeDto);
 
     return showTimes.map(showtime => plainToInstance(ShowtimeBaseDto, showtime));
   }
@@ -30,18 +23,17 @@ export class ShowtimesService {
   async getShowtimeById(id: number): Promise<ShowtimeBaseDto> {
     const data = await this.prisma.showtimes.findUnique({
       where: { id },
+      include: {
+        movie: true,
+        room: true,
+      }
     });
 
     if (!data) {
       throw new NotFoundException(`Showtime with ID ${id} not found`);
     }
 
-    const showtime: ShowtimeBaseDto = {
-      ...data,
-      id: Number(data.id),
-      movie_id: Number(data.movie_id),
-      room_id: Number(data.room_id),
-    };
+    const showtime: ShowtimeBaseDto = this.toShowtimeDto(data)
 
     return plainToInstance(ShowtimeBaseDto, showtime);
   }
@@ -53,14 +45,13 @@ export class ShowtimesService {
         room_id: dto.room_id,
         start_time: dto.start_time,
       },
+      include: {
+        movie: true,
+        room: true,
+      },
     });
 
-    const showtime: ShowtimeBaseDto = {
-      ...newShowtime,
-      id: Number(newShowtime.id),
-      movie_id: Number(newShowtime.movie_id),
-      room_id: Number(newShowtime.room_id),
-    };
+    const showtime: ShowtimeBaseDto = this.toShowtimeDto(newShowtime);
 
     return plainToInstance(ShowtimeBaseDto, showtime);
   }
@@ -73,20 +64,19 @@ export class ShowtimesService {
         room_id: dto.room_id,
         start_time: dto.start_time,
       },
+      include: {
+        movie: true,
+        room: true,
+      },
     });
 
-    const showtime: ShowtimeBaseDto = {
-      ...updated,
-      id: Number(updated.id),
-      movie_id: Number(updated.movie_id),
-      room_id: Number(updated.room_id),
-    };
+    const showtime: ShowtimeBaseDto = this.toShowtimeDto(updated)
 
     return plainToInstance(ShowtimeBaseDto, showtime);
   }
 
   async deleteShowtime(id: number): Promise<ShowtimeBaseDto> {
-    const existing = await this.prisma.showtimes.findUnique({ where: { id } });
+    const existing = await this.prisma.showtimes.findUnique({ where: { id }, include: { movie: true, room: true }, });
 
     if (!existing) {
       throw new NotFoundException(`Showtime with ID ${id} not found`);
@@ -94,13 +84,25 @@ export class ShowtimesService {
 
     await this.prisma.showtimes.delete({ where: { id } });
 
-    const showtime: ShowtimeBaseDto = {
-      ...existing,
-      id: Number(existing.id),
-      movie_id: Number(existing.movie_id),
-      room_id: Number(existing.room_id),
-    };
+    const showtime: ShowtimeBaseDto = this.toShowtimeDto(existing)
 
     return plainToInstance(ShowtimeBaseDto, showtime);
+  }
+
+  private toShowtimeDto = (data: any): ShowtimeBaseDto => {
+    return plainToInstance(ShowtimeBaseDto, {
+      id: Number(data.id),
+      movie: {
+        ...data.movie,
+        id: Number(data.movie.id),
+        url: data.movie.url ?? undefined,
+        description: data.movie.description ?? undefined,
+      },
+      room: {
+        ...data.room,
+        id: Number(data.room.id),
+      },
+      start_time: data.start_time,
+    });
   }
 }

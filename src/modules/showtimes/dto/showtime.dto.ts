@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
+import { MovieDto } from 'src/modules/movies/dto/movie.dto';
+import { RoomDto } from 'src/modules/rooms/dto/room.dto';
 
 export class ShowtimeDto {
   @IsNotEmpty()
@@ -8,15 +10,11 @@ export class ShowtimeDto {
   @ApiProperty({ description: 'Unique identifier for the showtime', example: 1 })
   id!: number;
 
-  @IsNotEmpty()
-  @IsInt()
-  @ApiProperty({ description: 'ID of the movie', example: 3 })
-  movie_id!: number;
+  @ApiProperty({ description: 'Movie details' })
+  movie!: MovieDto;
 
-  @IsNotEmpty()
-  @IsInt()
-  @ApiProperty({ description: 'ID of the room', example: 2 })
-  room_id!: number;
+  @ApiProperty({ description: 'Room details' })
+  room!: RoomDto;
 
   @IsNotEmpty()
   @IsDate()
