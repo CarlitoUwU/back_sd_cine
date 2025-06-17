@@ -63,6 +63,7 @@ export class MoviesService {
         title: obj.title,
         duration: obj.duration,
         description: obj.description,
+        url: obj.url,
       },
       select: {
         id: true,
@@ -90,6 +91,7 @@ export class MoviesService {
         title: obj.title,
         duration: obj.duration,
         description: obj.description,
+        url: obj.url,
       },
       select: {
         id: true,
