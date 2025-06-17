@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateRoomDto, RoomBaseDto } from './dto';
 import { plainToInstance } from 'class-transformer';
@@ -48,6 +48,10 @@ export class RoomsService {
   }
 
   async createRoom(dto: CreateRoomDto): Promise<RoomBaseDto> {
+    if (dto.capacity % 10 !== 0) {
+      throw new BadRequestException('Room capacity must be a multiple of 10.');
+    }
+
     const newRoom = await this.prisma.rooms.create({
       data: {
         name: dto.name,
@@ -58,6 +62,30 @@ export class RoomsService {
         name: true,
         capacity: true,
       },
+    });
+
+    const rowsCount = dto.capacity / 10;
+    const seatsData: {
+      seat_number: number;
+      row: string;
+      room_id: number;
+      is_occupied: boolean;
+    }[] = [];
+
+    for (let i = 0; i < rowsCount; i++) {
+      const row = String.fromCharCode(65 + i); // 'A', 'B', 'C', ...
+      for (let seatNum: number = 1; seatNum <= 10; seatNum++) {
+        seatsData.push({
+          seat_number: seatNum,
+          row,
+          room_id: Number(newRoom.id),
+          is_occupied: false,
+        });
+      }
+    }
+
+    await this.prisma.seats.createMany({
+      data: seatsData,
     });
 
     const room: RoomBaseDto = {
