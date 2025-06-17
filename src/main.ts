@@ -10,14 +10,15 @@ async function bootstrap() {
     whitelist: true,
   }));
 
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('NestJS Prisma Example')
     .setDescription('API documentation for NestJS with Prisma')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
 
   app.enableCors();
 
