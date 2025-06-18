@@ -20,7 +20,8 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE users (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
 );
@@ -29,7 +30,11 @@ CREATE TABLE movies (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   duration INT NOT NULL,
-  url VARCHAR(255),
+  url_poster VARCHAR(255),
+  url_background VARCHAR(255),
+  url_trailer VARCHAR(255),
+  genre VARCHAR(255),
+  raiting INT,
   description TEXT
 );
 
@@ -78,10 +83,10 @@ CREATE INDEX idx_seats_room ON seats(room_id);
 -- 5. DATOS DE EJEMPLO
 ------------------------------------------------------------
 
-INSERT INTO users (name, email, password) VALUES
-  ('Carlos', 'carlos@example.com', 'password123'),
-  ('Lucía', 'lucia@example.com', 'lucia_pass'),
-  ('Ana', 'ana@example.com', 'ana123');
+INSERT INTO users (first_name, last_name, email, password) VALUES
+  ('Carlos', 'Valdvivia', 'carlos@example.com', 'password123'),
+  ('Lucía', 'Luna', 'lucia@example.com', 'lucia_pass'),
+  ('Ana', 'Choque', 'ana@example.com', 'ana123');
 
 INSERT INTO movies (title, duration, description) VALUES
   ('Inception', 148, 'A mind-bending thriller'),
@@ -157,5 +162,3 @@ BEGIN
 END$$
 
 DELIMITER ;
-
-

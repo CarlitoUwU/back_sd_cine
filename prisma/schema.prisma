@@ -11,8 +11,12 @@ model movies {
   id          BigInt     @id @default(autoincrement())
   title       String     @db.VarChar(255)
   duration    Int
-  url         String?    @db.VarChar(255)
+  url_poster      String?    @db.VarChar(255)
+  url_background  String?    @db.VarChar(255)
+  url_trailer     String?    @db.VarChar(255)
   description String?    @db.Text
+  genre       String?    @db.VarChar(255)
+  raiting     Int?
 
   showtimes   showtimes[] // relación 1:N
 }
@@ -21,7 +25,6 @@ model rooms {
   id       BigInt     @id @default(autoincrement())
   name     String     @db.VarChar(100)
   capacity Int
-
   seats     seats[]
   showtimes showtimes[] // relación 1:N
 }
@@ -71,7 +74,8 @@ model tickets {
 
 model users {
   id       BigInt   @id @default(autoincrement())
-  name     String   @db.VarChar(255)
+  first_name     String   @db.VarChar(255)
+  last_name     String   @db.VarChar(255)
   email    String   @unique(map: "email") @db.VarChar(255)
   password String   @db.VarChar(255)
 
