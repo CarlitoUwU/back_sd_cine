@@ -129,4 +129,25 @@ export class UsersServices {
     return plainToInstance(UserBaseDto, deletedUser);
   }
 
+  async login(email: string, password: string): Promise<UserBaseDto> {
+    const data = await this.prisma.users.findUnique({
+      where: {
+        email,
+        password,
+      },
+    })
+
+    if (!data) {
+      throw new NotFoundException('User not found');
+    }
+    const user: UserBaseDto = {
+      id: Number(data.id),
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+    }
+
+    return user;
+  }
+
 }
