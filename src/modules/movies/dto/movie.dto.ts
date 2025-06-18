@@ -29,8 +29,28 @@ export class MovieDto {
 
   @IsOptional()
   @IsUrl()
-  @ApiPropertyOptional({ description: 'URL of the movie poster or cover image', type: String, example: 'https://example.com/images/inception-poster.jpg' })
-  url?: string;
+  @ApiPropertyOptional({ description: 'URL of the movie poster image', type: String, example: 'https://example.com/images/poster.jpg' })
+  url_poster?: string;
+
+  @IsOptional()
+  @IsUrl()
+  @ApiPropertyOptional({ description: 'URL of the movie background image', type: String, example: 'https://example.com/images/background.jpg' })
+  url_background?: string;
+
+  @IsOptional()
+  @IsUrl()
+  @ApiPropertyOptional({ description: 'URL of the movie trailer', type: String, example: 'https://example.com/videos/trailer.mp4' })
+  url_trailer?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ description: 'Genre of the movie', type: String, example: 'Science Fiction' })
+  genre?: string;
+
+  @IsOptional()
+  @IsInt()
+  @ApiPropertyOptional({ description: 'Rating of the movie (e.g., 1–10)', type: Number, example: 9 })
+  raiting?: number;
 
   @IsOptional()
   @IsString()
