@@ -13,14 +13,16 @@ export class UsersServices {
     const data = await this.prisma.users.findMany({
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
       },
     });
 
     const users: UserBaseDto[] = data.map(user => ({
       id: Number(user.id),
-      name: user.name,
+      first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
     }));
 
@@ -32,7 +34,8 @@ export class UsersServices {
       where: { id },
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
       },
     });
@@ -42,7 +45,8 @@ export class UsersServices {
 
     const user: UserBaseDto = {
       id: Number(data.id),
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       email: data.email,
     };
 
@@ -52,20 +56,23 @@ export class UsersServices {
   async createUser(obj: CreateUserDto): Promise<UserBaseDto> {
     const data = await this.prisma.users.create({
       data: {
-        name: obj.name,
+        first_name: obj.first_name,
+        last_name: obj.last_name,
         email: obj.email,
         password: obj.password,
       },
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
       },
     });
 
     const user: UserBaseDto = {
       id: Number(data.id),
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       email: data.email,
     };
 
@@ -76,20 +83,23 @@ export class UsersServices {
     const data = await this.prisma.users.update({
       where: { id },
       data: {
-        name: obj.name,
+        first_name: obj.first_name,
+        last_name: obj.last_name,
         email: obj.email,
         password: obj.password,
       },
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
       },
     });
 
     const user: UserBaseDto = {
       id: Number(data.id),
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       email: data.email,
     };
 
@@ -111,7 +121,8 @@ export class UsersServices {
 
     const deletedUser: UserBaseDto = {
       id: Number(user.id),
-      name: user.name,
+      first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
     };
 

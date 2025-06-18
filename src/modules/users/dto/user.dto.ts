@@ -13,9 +13,15 @@ export class UserDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
-  @ApiProperty({ description: 'Name of the user', type: String, example: 'John Doe' })
-  name!: string;
+  @MinLength(2)
+  @ApiProperty({ description: 'First name of the user', type: String, example: 'John' })
+  first_name!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(2)
+  @ApiProperty({ description: 'Last name of the user', type: String, example: 'Doe' })
+  last_name!: string;
 
   @IsNotEmpty()
   @IsEmail()
