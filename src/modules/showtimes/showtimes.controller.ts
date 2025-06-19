@@ -61,4 +61,13 @@ export class ShowtimesController {
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.showtimesService.deleteShowtime(id);
   }
+
+  @Get('/movies/:id/showtimes')
+  @ApiOperation({ summary: 'Get all showtimes by movie ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID of the movie' })
+  @ApiResponse({ status: 200, description: 'List of showtimes for a movie', type: [ShowtimeBaseDto] })
+  @ApiResponse({ status: 404, description: 'No showtimes found for this movie' })
+  getShowtimesByMovieId(@Param('id', ParseIntPipe) id: number) {
+    return this.showtimesService.getShowtimesByMovieId(id);
+  }
 }

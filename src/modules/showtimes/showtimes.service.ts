@@ -44,6 +44,8 @@ export class ShowtimesService {
         movie_id: dto.movie_id,
         room_id: dto.room_id,
         start_time: dto.start_time,
+        format: dto.format,
+        price: dto.price,
       },
       include: {
         movie: true,
@@ -63,6 +65,8 @@ export class ShowtimesService {
         movie_id: dto.movie_id,
         room_id: dto.room_id,
         start_time: dto.start_time,
+        format: dto.format,
+        price: dto.price,
       },
       include: {
         movie: true,
@@ -89,6 +93,23 @@ export class ShowtimesService {
     return plainToInstance(ShowtimeBaseDto, showtime);
   }
 
+  async getShowtimesByMovieId(movie_id: number): Promise<ShowtimeBaseDto[]> {
+    const data = await this.prisma.showtimes.findMany({
+      where: { movie_id },
+      include: {
+        movie: true,
+        room: true,
+      },
+    });
+
+    if (!data || data.length === 0) {
+      throw new NotFoundException(`No showtimes found for movie ID ${movie_id}`);
+    }
+
+    const showtimes = data.map(this.toShowtimeDto);
+    return showtimes.map(s => plainToInstance(ShowtimeBaseDto, s));
+  }
+
   private toShowtimeDto = (data: any): ShowtimeBaseDto => {
     return plainToInstance(ShowtimeBaseDto, {
       id: Number(data.id),
@@ -103,6 +124,8 @@ export class ShowtimesService {
         id: Number(data.room.id),
       },
       start_time: data.start_time,
+      format: data.format,
+      price: data.price,
     });
   }
 }
