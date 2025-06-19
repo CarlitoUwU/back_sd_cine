@@ -16,6 +16,14 @@ export class TicketsController {
     return this.ticketsService.createTicket(dto);
   }
 
+  @Post('bulk')
+  @ApiOperation({ summary: 'Buy multiple tickets in a single transaction' })
+  @ApiResponse({ status: 201, description: 'Tickets purchased successfully', type: [TicketDto] })
+  @ApiResponse({ status: 400, description: 'Error buying one or more tickets' })
+  createMultiple(@Body() dtos: CreateTicketDto[]) {
+    return this.ticketsService.createMultipleTickets(dtos);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all tickets' })
   @ApiResponse({ status: 200, type: TicketDto, isArray: true })

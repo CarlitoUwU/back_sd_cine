@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsInt, IsNotEmpty } from 'class-validator';
+import { SeatBaseDto } from 'src/modules/seats/dto';
+import { ShowtimeBaseDto } from 'src/modules/showtimes/dto';
+import { UserBaseDto } from 'src/modules/users/dto';
 
 export class TicketDto {
   @IsNotEmpty()
@@ -10,17 +13,17 @@ export class TicketDto {
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 1 })
-  user_id: number;
+  user: UserBaseDto;
 
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 2 })
-  showtime_id: number;
+  showtime: ShowtimeBaseDto;
 
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 5 })
-  seat_id: number;
+  seat: SeatBaseDto;
 
   @IsNotEmpty()
   @IsDate()
