@@ -16,7 +16,7 @@ model movies {
   url_trailer     String?    @db.VarChar(255)
   description String?    @db.Text
   genre       String?    @db.VarChar(255)
-  raiting     Int?
+  rating     Float?
 
   showtimes   showtimes[] // relación 1:N
 }
@@ -47,6 +47,8 @@ model showtimes {
   movie_id   BigInt
   room_id    BigInt
   start_time DateTime @db.Timestamp(0)
+  format     String   @db.VarChar(100)
+  price      Float
 
   movie movies @relation(fields: [movie_id], references: [id])
   room  rooms  @relation(fields: [room_id], references: [id])
