@@ -7,6 +7,8 @@ import {
   MinLength,
   Min,
   IsUrl,
+  IsNumber,
+  Max,
 } from 'class-validator';
 
 export class MovieDto {
@@ -48,9 +50,11 @@ export class MovieDto {
   genre?: string;
 
   @IsOptional()
-  @IsInt()
-  @ApiPropertyOptional({ description: 'Rating of the movie (e.g., 1–10)', type: Number, example: 9 })
-  raiting?: number;
+  @IsNumber()
+  @Min(0)
+  @Max(5)
+  @ApiPropertyOptional({ description: 'Rating of the movie (e.g., 0-5.0)', type: Number, example: 4.5 })
+  rating?: number;
 
   @IsOptional()
   @IsString()

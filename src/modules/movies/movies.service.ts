@@ -19,7 +19,7 @@ export class MoviesService {
         url_background: true,
         url_trailer: true,
         genre: true,
-        raiting: true,
+        rating: true,
       },
     });
 
@@ -32,7 +32,7 @@ export class MoviesService {
       url_background: movie.url_background ?? undefined,
       url_trailer: movie.url_trailer ?? undefined,
       genre: movie.genre ?? undefined,
-      raiting: movie.raiting ?? undefined,
+      rating: movie.rating ?? undefined,
     }));
 
     return movies.map(movie => plainToInstance(MovieBaseDto, movie))
@@ -50,7 +50,7 @@ export class MoviesService {
         url_background: true,
         url_trailer: true,
         genre: true,
-        raiting: true,
+        rating: true,
       }
     })
 
@@ -66,7 +66,7 @@ export class MoviesService {
       url_background: data.url_background ?? undefined,
       url_trailer: data.url_trailer ?? undefined,
       genre: data.genre ?? undefined,
-      raiting: data.raiting ?? undefined,
+      rating: data.rating ?? undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie)
@@ -82,7 +82,7 @@ export class MoviesService {
         url_background: obj.url_background ?? undefined,
         url_trailer: obj.url_trailer ?? undefined,
         genre: obj.genre ?? undefined,
-        raiting: obj.raiting ?? undefined,
+        rating: obj.rating ?? undefined,
       },
       select: {
         id: true,
@@ -93,7 +93,7 @@ export class MoviesService {
         url_background: true,
         url_trailer: true,
         genre: true,
-        raiting: true,
+        rating: true,
       }
     })
 
@@ -105,7 +105,7 @@ export class MoviesService {
       url_background: data.url_background ?? undefined,
       url_trailer: data.url_trailer ?? undefined,
       genre: data.genre ?? undefined,
-      raiting: data.raiting ?? undefined,
+      rating: data.rating ?? undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie);
@@ -122,7 +122,7 @@ export class MoviesService {
         url_background: obj.url_background ?? undefined,
         url_trailer: obj.url_trailer ?? undefined,
         genre: obj.genre ?? undefined,
-        raiting: obj.raiting ?? undefined,
+        rating: obj.rating ?? undefined,
       },
       select: {
         id: true,
@@ -133,7 +133,7 @@ export class MoviesService {
         url_background: true,
         url_trailer: true,
         genre: true,
-        raiting: true,
+        rating: true,
       },
     });
 
@@ -145,7 +145,7 @@ export class MoviesService {
       url_background: data.url_background ?? undefined,
       url_trailer: data.url_trailer ?? undefined,
       genre: data.genre ?? undefined,
-      raiting: data.raiting ?? undefined,
+      rating: data.rating ?? undefined,
     }
 
     return plainToInstance(MovieBaseDto, movie);
@@ -172,7 +172,7 @@ export class MoviesService {
       url_background: movie.url_background ?? undefined,
       url_trailer: movie.url_trailer ?? undefined,
       genre: movie.genre ?? undefined,
-      raiting: movie.raiting ?? undefined,
+      rating: movie.rating ?? undefined,
     }
 
     return plainToInstance(MovieBaseDto, deletedMovie);
