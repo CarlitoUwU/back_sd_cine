@@ -2,6 +2,9 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put
 import { UsersServices } from './users.service';
 import { CreateUserDto, LoginDto, UserBaseDto } from './dto/index';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBody } from '@nestjs/swagger';
+import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
+import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -82,5 +85,33 @@ export class UsersController {
   @HttpCode(200) 
   login(@Body() user: LoginDto) {
     return this.usersService.login(user.email, user.password);
+  }
+
+    @Post('/create-reset-password')
+  @ApiOperation({ summary: 'Create a reset password code' })
+  @ApiBody({ type: CreateResetPasswordDto })
+  @ApiResponse({ status: 200, description: 'Reset password code created successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  createCodeResetPassword(@Body() createResetPasswordDto: CreateResetPasswordDto) {
+    return this.usersService.createCodeResetPassword(createResetPasswordDto.email);
+  }
+
+  @Post('/verify-reset-code')
+  @ApiOperation({ summary: 'Verify reset password code' })
+  @ApiBody({ type: VerifyResetCodeDto })
+  @ApiResponse({ status: 200, description: 'Reset code verified successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 400, description: 'Invalid reset code' })
+  verifyResetCode(@Body() verifyResetCodeDto: VerifyResetCodeDto) {
+    return this.usersService.verifyResetCode(verifyResetCodeDto.email, verifyResetCodeDto.code);
+  }
+
+  @Post('/reset-password')
+  @ApiOperation({ summary: 'Reset user password' })
+  @ApiBody({ type: ResetPasswordDto })
+  @ApiResponse({ status: 200, description: 'Password reset successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.usersService.resetPassword(resetPasswordDto.email, resetPasswordDto.newPassword);
   }
 }
