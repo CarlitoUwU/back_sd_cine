@@ -1,0 +1,22 @@
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: cine_sd_mysql
+    environment:
+      - MYSQL_DATABASE=cine_sd
+      - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=password_123
+      - MYSQL_ROOT_PASSWORD=root_password_123
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./cine_sd.sql:/docker-entrypoint-initdb.d/01-init.sql
+
+  # Redis Cache
+  redis:
+    image: redis
+    container_name: cine_sd_redis
+    ports:
+      - "6379:6379"
