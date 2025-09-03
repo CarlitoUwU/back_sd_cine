@@ -49,7 +49,7 @@ Repositorio: [https://github.com/CarlitoUwU/back_sd_cine](https://github.com/Car
 
 1. Clona el repositorio:
   ```bash
-  git clone <repo-url>
+  git clone https://github.com/CarlitoUwU/back_sd_cine
   cd back_sd_cine
   ```
 
