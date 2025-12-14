@@ -9,6 +9,9 @@ import { RedisService } from './redis.service';
       provide: 'REDIS_CLIENT',
       useFactory: async (configService: ConfigService) => {
         const Redis = require('ioredis');
+        if (!process.env.REDIS_URL) {
+          return null;
+        }
         const redis = new Redis({
           host: configService.get('redis.host', 'localhost'),
           port: configService.get('redis.port', 6379),
@@ -34,4 +37,4 @@ import { RedisService } from './redis.service';
   ],
   exports: [RedisService],
 })
-export class RedisModule {}
+export class RedisModule { }
