@@ -1,19 +1,16 @@
 services:
   # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: cine_sd_mysql
+  postgres:
+    image: postgres:15
+    container_name: cine_sd_postgres
     environment:
-      - MYSQL_DATABASE=cine_sd
-      - MYSQL_USER=mysql_user
-      - MYSQL_PASSWORD=password_123
-      - MYSQL_ROOT_PASSWORD=root_password_123
+      - POSTGRES_DB=cine_sd
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=password_123
     ports:
-      - "3310:3306"
+      - "5432:5432"
     volumes:
-      - ./mysql:/var/lib/mysql
-      - ./cine_sd.sql:/docker-entrypoint-initdb.d/01-init.sql
-
+      - ./postgres-data:/var/lib/postgresql/data
   # Redis Cache
   redis:
     image: redis
