@@ -8,22 +8,31 @@ export class TicketsService {
   constructor(private prisma: PrismaService) { }
 
   async createTicket(dto: CreateTicketDto): Promise<TicketBaseDto> {
-    const result = await this.prisma.$queryRawUnsafe<{ mensaje: string }[]>(
-      `CALL sp_ComprarTicket(${dto.user_id}, ${dto.showtime_id}, '${dto.row}', ${dto.seat_number})`
-    );
+    const result = await this.prisma.$queryRaw<
+      { mensaje: string }[]
+    >`
+      SELECT comprar_ticket(
+        ${dto.user_id}::bigint,
+        ${dto.showtime_id}::bigint,
+        ${dto.row}::varchar,
+        ${dto.seat_number}::int
+      ) AS mensaje
+    `;
 
-    const mensaje = result[0]?.['f0'];
+    const mensaje = result[0]?.mensaje;
 
     if (!mensaje || !mensaje.includes('éxito')) {
-      throw new BadRequestException(mensaje);
+      throw new BadRequestException(mensaje ?? 'Error al comprar ticket');
     }
 
     const showtime = await this.prisma.showtimes.findUnique({
       where: { id: dto.showtime_id },
       select: { room_id: true },
     });
-    if (!showtime) throw new Error("Showtime no existe");
-    const roomId = showtime.room_id;
+
+    if (!showtime) {
+      throw new Error('Showtime no existe');
+    }
 
     const data = await this.prisma.tickets.findFirst({
       where: {
@@ -32,7 +41,7 @@ export class TicketsService {
         seat: {
           row: dto.row,
           seat_number: dto.seat_number,
-          room_id: roomId,
+          room_id: showtime.room_id,
         },
       },
       include: {
@@ -47,9 +56,11 @@ export class TicketsService {
       },
     });
 
-    const ticket: TicketBaseDto = this.toTicketDto(data);
+    if (!data) {
+      throw new Error('Ticket no encontrado después de la compra');
+    }
 
-    return ticket;
+    return this.toTicketDto(data);
   }
 
   async createMultipleTickets(dtos: CreateTicketDto[]): Promise<TicketBaseDto[]> {
@@ -57,27 +68,35 @@ export class TicketsService {
       const tickets: TicketBaseDto[] = [];
 
       for (const dto of dtos) {
-        // Llamas el stored procedure usando tx.$queryRawUnsafe para usar la misma transacción
-        const result = await tx.$queryRawUnsafe<{ mensaje: string }[]>(
-          `CALL sp_ComprarTicketSinRollBack(${dto.user_id}, ${dto.showtime_id}, '${dto.row}', ${dto.seat_number})`
-        );
+        const result = await tx.$queryRaw<
+          { mensaje: string }[]
+        >`
+        SELECT comprar_ticket(
+          ${dto.user_id}::bigint,
+          ${dto.showtime_id}::bigint,
+          ${dto.row}::varchar,
+          ${dto.seat_number}::int
+        ) AS mensaje
+      `;
 
-        const mensaje = result[0]?.['f0'];
+        const mensaje = result[0]?.mensaje;
 
         if (!mensaje || !mensaje.includes('éxito')) {
-          // Si falla, lanza error para que se haga rollback automático
-          throw new BadRequestException(`Error comprando ticket fila ${dto.row} asiento ${dto.seat_number}: ${mensaje}`);
+          throw new BadRequestException(
+            `Error comprando ticket fila ${dto.row} asiento ${dto.seat_number}: ${mensaje}`
+          );
         }
 
-        // Obtener room_id para la búsqueda
         const showtime = await tx.showtimes.findUnique({
           where: { id: dto.showtime_id },
           select: { room_id: true },
         });
-        if (!showtime) throw new Error("Showtime no existe");
-        const roomId = showtime.room_id;
 
-        // Buscar el ticket recién comprado para retornar datos
+        if (!showtime) {
+          throw new Error('Showtime no existe');
+        }
+
+        // Buscar ticket recién creado
         const data = await tx.tickets.findFirst({
           where: {
             user_id: dto.user_id,
@@ -85,7 +104,7 @@ export class TicketsService {
             seat: {
               row: dto.row,
               seat_number: dto.seat_number,
-              room_id: roomId,
+              room_id: showtime.room_id,
             },
           },
           include: {
@@ -103,11 +122,9 @@ export class TicketsService {
         tickets.push(this.toTicketDto(data));
       }
 
-      // Si llegamos hasta acá sin excepción, la transacción se comitea automáticamente
       return tickets;
     });
   }
-
 
   async getAllTickets(): Promise<TicketBaseDto[]> {
     const data = await this.prisma.tickets.findMany({
