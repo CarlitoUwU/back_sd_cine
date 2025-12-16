@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { UserBaseDto } from './dto';
-import { CreateUserDto } from './dto/index';
+import { UserBaseDto } from './dto/user-base.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { plainToInstance } from 'class-transformer';
 import { MailsService } from '../mails/mails.service';

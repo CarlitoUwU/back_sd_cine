@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { UsersServices } from './users.service';
-import { CreateUserDto, LoginDto, UserBaseDto } from './dto/index';
+import { UserBaseDto } from './dto/user-base.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBody } from '@nestjs/swagger';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -82,12 +84,12 @@ export class UsersController {
   @ApiBody({ type: LoginDto })
   @ApiResponse({ status: 200, description: 'User authenticated', type: UserBaseDto })
   @ApiResponse({ status: 404, description: 'User not found' })
-  @HttpCode(200) 
+  @HttpCode(200)
   login(@Body() user: LoginDto) {
     return this.usersService.login(user.email, user.password);
   }
 
-    @Post('/create-reset-password')
+  @Post('/create-reset-password')
   @ApiOperation({ summary: 'Create a reset password code' })
   @ApiBody({ type: CreateResetPasswordDto })
   @ApiResponse({ status: 200, description: 'Reset password code created successfully' })
