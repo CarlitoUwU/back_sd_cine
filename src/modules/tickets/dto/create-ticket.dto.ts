@@ -1,19 +1,16 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { TicketDto } from './ticket.dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsString, Max, Min, MinLength } from 'class-validator';
-
-export class TicketBaseDto extends OmitType(TicketDto, [] as const) { }
 
 export class CreateTicketDto {
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 1 })
-  user_id: number;
+  user_id!: number;
 
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 2 })
-  showtime_id: number;
+  showtime_id!: number;
 
   @IsNotEmpty()
   @IsInt()
