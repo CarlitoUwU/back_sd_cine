@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateMovieDto, MovieBaseDto } from './dto';
+import { MovieBaseDto } from './dto/movie-base.dto';
+import { CreateMovieDto } from './dto/create-movie.dto';
 import { PrismaService } from 'src/prisma.service';
 import { plainToInstance } from 'class-transformer';
 
