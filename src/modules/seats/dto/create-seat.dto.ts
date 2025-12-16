@@ -1,8 +1,5 @@
-import { OmitType, ApiProperty } from '@nestjs/swagger';
-import { SeatDto } from './seat.dto';
-import { IsInt, IsNotEmpty, IsString, Min, MinLength, IsBoolean, Max } from 'class-validator';
-
-export class SeatBaseDto extends OmitType(SeatDto, [] as const) { }
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNotEmpty, IsString, Min, MinLength, IsBoolean, Max, IsOptional } from 'class-validator';
 
 export class CreateSeatDto {
   @IsNotEmpty()
@@ -23,8 +20,8 @@ export class CreateSeatDto {
   @ApiProperty({ description: 'Row identifier (e.g., A, B, C)', example: 'B' })
   row!: string;
 
-  @IsNotEmpty()
   @IsBoolean()
+  @IsOptional()
   @ApiProperty({ description: 'Indicates if the seat is occupied', example: false })
   is_occupied?: boolean;
 }

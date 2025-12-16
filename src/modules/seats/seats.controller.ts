@@ -16,7 +16,8 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { SeatsService } from './seats.service';
-import { CreateSeatDto, SeatBaseDto } from './dto';
+import { CreateSeatDto } from './dto/create-seat.dto';
+import { SeatBaseDto } from './dto/seat-base.dto';
 
 @ApiTags('Seats')
 @Controller('seats')

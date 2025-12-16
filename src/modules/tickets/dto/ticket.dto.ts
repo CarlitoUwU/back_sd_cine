@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsInt, IsNotEmpty } from 'class-validator';
-import { SeatBaseDto } from 'src/modules/seats/dto';
+import { SeatBaseDto } from '../../seats/dto/seat-base.dto';
 import { ShowtimeBaseDto } from 'src/modules/showtimes/dto';
 import { UserBaseDto } from 'src/modules/users/dto/user-base.dto';
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsString, Min, MinLength, IsBoolean, Max } from 'class-validator';
-import { RoomDto } from 'src/modules/rooms/dto/room.dto';
+import { RoomDto } from '../../rooms/dto/room.dto';
 
 export class SeatDto {
   @IsNotEmpty()
