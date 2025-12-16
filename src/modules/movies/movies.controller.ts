@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { MovieBaseDto } from './dto';
-import { CreateMovieDto } from './dto';
+import { MovieBaseDto } from './dto/movie-base.dto';
+import { CreateMovieDto } from './dto/create-movie.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 
 @Controller('movies')
