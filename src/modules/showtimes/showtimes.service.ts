@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateShowtimeDto, ShowtimeBaseDto } from './dto';
+import { CreateShowtimeDto } from './dto/create-showtime.dto';
+import { ShowtimeBaseDto } from './dto/showtime-base.dto';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
