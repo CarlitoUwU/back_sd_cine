@@ -9,7 +9,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { CreateRoomDto, RoomBaseDto } from './dto';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { RoomBaseDto } from './dto/room-base.dto';
 import {
   ApiTags,
   ApiOperation,
