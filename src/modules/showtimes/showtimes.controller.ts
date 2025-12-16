@@ -15,7 +15,8 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { ShowtimesService } from './showtimes.service';
-import { CreateShowtimeDto, ShowtimeBaseDto } from './dto';
+import { CreateShowtimeDto } from './dto/create-showtime.dto';
+import { ShowtimeBaseDto } from './dto/showtime-base.dto';
 
 @ApiTags('Showtimes')
 @Controller('showtimes')
