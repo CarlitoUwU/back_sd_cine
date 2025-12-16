@@ -20,5 +20,6 @@ export class VerifyResetCodeDto {
   @IsPositive({ message: 'Code must be a positive number' })
   @Min(100000, { message: 'Code must be a 6-digit number' })
   @Max(999999, { message: 'Code must be a 6-digit number' })
+  @IsNotEmpty({ message: 'Code is required' })
   code!: number;
 }
