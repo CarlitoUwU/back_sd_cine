@@ -1,32 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsInt, IsNotEmpty } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, ValidateNested } from 'class-validator';
 import { SeatBaseDto } from '../../seats/dto/seat-base.dto';
 import { ShowtimeBaseDto } from '../../showtimes/dto/showtime-base.dto';
-import { UserBaseDto } from 'src/modules/users/dto/user-base.dto';
+import { UserBaseDto } from '../../users/dto/user-base.dto';
+import { Type } from 'class-transformer';
 
 export class TicketDto {
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({ example: 1 })
-  id: number;
+  id!: number;
 
   @IsNotEmpty()
-  @IsInt()
-  @ApiProperty({ example: 1 })
-  user: UserBaseDto;
+  @Type(() => UserBaseDto)
+  @ApiProperty({ type: () => UserBaseDto })
+  user!: UserBaseDto;
 
   @IsNotEmpty()
-  @IsInt()
-  @ApiProperty({ example: 2 })
-  showtime: ShowtimeBaseDto;
+  @Type(() => ShowtimeBaseDto)
+  @ApiProperty({ type: () => ShowtimeBaseDto })
+  showtime!: ShowtimeBaseDto;
 
   @IsNotEmpty()
-  @IsInt()
-  @ApiProperty({ example: 5 })
-  seat: SeatBaseDto;
+  @Type(() => SeatBaseDto)
+  @ApiProperty({ type: () => SeatBaseDto })
+  seat!: SeatBaseDto;
 
   @IsNotEmpty()
   @IsDate()
+  @Type(() => Date)
   @ApiProperty({ example: new Date().toISOString() })
   purchase_date?: Date;
 }

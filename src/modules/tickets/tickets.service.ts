@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateTicketDto, TicketBaseDto } from './dto';
+import { CreateTicketDto } from './dto/create-ticket.dto';
+import { TicketBaseDto } from './dto/ticket-base.dto';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()

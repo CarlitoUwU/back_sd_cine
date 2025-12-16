@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { TicketDto } from './dto/ticket.dto';
-import { CreateTicketDto } from './dto';
+import { CreateTicketDto } from './dto/create-ticket.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tickets')
