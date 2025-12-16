@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MovieBaseDto } from 'src/modules/movies/dto/movie-base.dto';
-import { RoomBaseDto } from 'src/modules/rooms/dto';
+import { RoomBaseDto } from 'src/modules/rooms/dto/room-base.dto';
 
 export class ShowtimeDto {
   @ApiProperty()
