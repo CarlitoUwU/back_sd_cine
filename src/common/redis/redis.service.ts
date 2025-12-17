@@ -14,9 +14,8 @@ export class RedisService {
 
     // Guardar en Redis con expiración de 10 minutos
     const key = `password_reset:${email}`;
-    await this.redis.setex(key, 600, code); // 600 segundos = 10 minutos
+    await this.redis.setex(key, 60 * 10, code);
 
-    console.log(`🔑 Generated reset code for ${email}: ${code}`);
     return code;
   }
 
@@ -28,19 +27,16 @@ export class RedisService {
     const storedCode = await this.redis.get(key);
 
     if (!storedCode) {
-      console.log(`❌ No reset code found for ${email} or code expired`);
       return false;
     }
 
     const isValid = storedCode === code;
-    console.log(`${isValid ? '✅' : '❌'} Code verification for ${email}: ${isValid}`);
 
     if (isValid) {
       // Marcar como verificado (válido por 30 minutos para resetear)
       const verifiedKey = `password_reset_verified:${email}`;
-      await this.redis.setex(verifiedKey, 1800, 'verified'); // 30 minutos
+      await this.redis.setex(verifiedKey, 60 * 30, 'verified');
 
-      // Opcional: eliminar el código usado
       await this.redis.del(key);
     }
 
@@ -55,9 +51,6 @@ export class RedisService {
     const isVerified = await this.redis.get(verifiedKey);
 
     const hasVerified = !!isVerified;
-    console.log(
-      `${hasVerified ? '✅' : '❌'} Reset verification status for ${email}: ${hasVerified}`,
-    );
 
     return hasVerified;
   }
@@ -68,7 +61,6 @@ export class RedisService {
   async clearResetVerification(email: string): Promise<void> {
     const verifiedKey = `password_reset_verified:${email}`;
     await this.redis.del(verifiedKey);
-    console.log(`🧹 Cleared reset verification for ${email}`);
   }
 
   /**

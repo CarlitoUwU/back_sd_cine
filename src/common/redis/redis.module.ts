@@ -24,9 +24,7 @@ import { RedisService } from './redis.service';
         // Conectar y manejar errores
         try {
           await redis.connect();
-          console.log('✅ Redis connected successfully');
         } catch (error) {
-          console.warn('⚠️ Redis connection failed, continuing without cache:', error.message);
         }
 
         return redis;
