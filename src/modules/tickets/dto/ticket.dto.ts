@@ -13,17 +13,17 @@ export class TicketDto {
 
   @IsNotEmpty()
   @Type(() => UserBaseDto)
-  @ApiProperty({ type: () => UserBaseDto })
+  // @ApiProperty({ type: () => UserBaseDto })
   user!: UserBaseDto;
 
   @IsNotEmpty()
   @Type(() => ShowtimeBaseDto)
-  @ApiProperty({ type: () => ShowtimeBaseDto })
+  // @ApiProperty({ type: () => ShowtimeBaseDto })
   showtime!: ShowtimeBaseDto;
 
   @IsNotEmpty()
   @Type(() => SeatBaseDto)
-  @ApiProperty({ type: () => SeatBaseDto })
+  // @ApiProperty({ type: () => SeatBaseDto })
   seat!: SeatBaseDto;
 
   @IsNotEmpty()

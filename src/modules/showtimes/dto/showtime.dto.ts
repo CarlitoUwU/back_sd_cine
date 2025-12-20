@@ -27,11 +27,11 @@ export class ShowtimeDto {
   @ApiProperty()
   price!: number;
 
-  @ApiProperty({ type: () => MovieBaseDto })
+  // @ApiProperty({ type: () => MovieBaseDto })
   @Type(() => MovieBaseDto)
   movie!: MovieBaseDto;
 
-  @ApiProperty({ type: () => RoomBaseDto })
+  // @ApiProperty({ type: () => RoomBaseDto })
   @Type(() => RoomBaseDto)
   room!: RoomBaseDto;
 }
